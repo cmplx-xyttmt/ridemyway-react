@@ -1,9 +1,4 @@
 # Ride My Way
-
-[![Build Status](https://travis-ci.org/cmplx-xyttmt/ridemyway-react.svg?branch=develop)](https://travis-ci.org/cmplx-xyttmt/ridemyway-react)
-[![Coverage Status](https://coveralls.io/repos/github/cmplx-xyttmt/ridemyway-react/badge.svg)](https://coveralls.io/github/cmplx-xyttmt/ridemyway-react)
-[![Maintainability](https://api.codeclimate.com/v1/badges/756d8d40f6687d23e4e2/maintainability)](https://codeclimate.com/github/cmplx-xyttmt/ridemyway-react/maintainability)
-
 Ride my way is a carpooling application that allows users to create ride offers and ride requests.
 
 This repository contains the front-end of the application that is powered by the API implemented in [React](https://reactjs.org/).
