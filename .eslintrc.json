@@ -1,0 +1,25 @@
+{
+    "extends": "airbnb",
+    "rules": {
+        "func-names": [
+            "error",
+            "never"
+        ],
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx"
+                ]
+            }
+        ],
+        "compilerOptions": { "target": "ES6", "module": "commonjs" }
+    },
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "node": true,
+        "jest": true
+    }
+}
