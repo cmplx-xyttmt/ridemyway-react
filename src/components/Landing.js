@@ -5,29 +5,39 @@ import PropTypes from 'prop-types';
 import '../styles/landing.css';
 import M from 'materialize-css';
 import { Spinner } from '../common';
-import SignUp from './auth_components';
-import { toggleAuthViewAction, handleSignUp } from '../actions/authenticationActions';
+import SignUp from './Signup';
+import Login from './Login';
+import { toggleAuthViewAction, handleSignUp, handleLogin } from '../actions/authenticationActions';
 
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.successToasts = 0;
+    this.signUpSuccessToasts = 0;
+    this.logInSuccessToasts = 0;
   }
 
   componentDidUpdate(prevProps) {
-    const { auth } = this.props;
+    const { auth, history } = this.props;
     if (auth.errors !== prevProps.errors) {
       if (auth.errors) M.toast({ html: auth.errors, classes: 'red darken-3' });
     }
 
-    if (auth.user && this.successToasts === 0) {
+    if (auth.signUpSuccess && this.signUpSuccessToasts === 0) {
       M.toast({ html: "You've signed up successfully. Please login to confirm your account", classes: 'green' });
-      this.successToasts += 1;
+      this.signUpSuccessToasts += 1;
+    }
+
+    if (auth.loginSuccess && this.logInSuccessToasts === 0) {
+      M.toast({ html: "You've logged in successfully", classes: 'green' });
+      this.logInSuccessToasts += 1;
+      history.push('/rides');
     }
   }
 
   render() {
-    const { auth, toggleAuthView, signUp } = this.props;
+    const {
+      auth, toggleAuthView, signUp, login,
+    } = this.props;
     const { isLoading, isOnSignUpView, isOnLoginView } = auth;
 
     return (
@@ -55,17 +65,34 @@ class LandingPage extends React.Component {
             {isLoading && <Spinner />}
             {isOnSignUpView && (
               <div className="center-block row">
-                <SignUp signUp={signUp} auth={auth} />
+                <SignUp signUp={signUp} />
                 <p className="message orange-text flow-text col s12" style={{ fontSize: 'small' }}>
                   Already registered?
                   <span
-                    className="red-text darken-4"
+                    className="red-text darken-4 login-prompt"
                     role="button"
                     tabIndex="0"
-                    onClick={() => 'help'}
+                    onClick={() => toggleAuthView(3)}
                     style={{ cursor: 'pointer' }}
                   >
                     login
+                  </span>
+                </p>
+              </div>
+            )}
+            {isOnLoginView && (
+              <div className="center-block row">
+                <Login login={login} />
+                <p className="message orange-text flow-text col s12" style={{ fontSize: 'small' }}>
+                  Not yet registered?
+                  <span
+                    className="red-text darken-4 sign-up-prompt"
+                    role="button"
+                    tabIndex="0"
+                    onClick={() => toggleAuthView(2)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    sign up
                   </span>
                 </p>
               </div>
@@ -81,6 +108,10 @@ LandingPage.propTypes = {
   auth: PropTypes.object.isRequired,
   toggleAuthView: PropTypes.func.isRequired,
   signUp: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -90,6 +121,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   toggleAuthView: numericFilter => dispatch(toggleAuthViewAction(numericFilter)),
   signUp: userData => dispatch(handleSignUp(userData)),
+  login: userData => dispatch(handleLogin(userData)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

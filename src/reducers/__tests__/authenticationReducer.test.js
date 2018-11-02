@@ -2,6 +2,8 @@ import {
   TOGGLE_AUTH_VIEW,
   SIGN_UP,
   SIGNUP_FAILED,
+  LOGIN,
+  LOGIN_FAILED,
 
 } from '../../actions/types';
 import { authenticationReducer } from '../authentication';
@@ -53,6 +55,8 @@ describe('authentication reducer tests', () => {
     expect(afterState).toEqual({
       user: { username: 'test' },
       errors: undefined,
+      loginSuccess: false,
+      signUpSuccess: true,
       isLoading: false,
     });
   });
@@ -64,6 +68,32 @@ describe('authentication reducer tests', () => {
     };
     const afterState = authenticationReducer(beforeState, action);
 
+    expect(afterState).toEqual({ errors: { error: 'error' }, isLoading: false, user: undefined });
+  });
+
+  it('logs in the user', () => {
+    const action = {
+      type: LOGIN,
+      payload: userData,
+    };
+
+    const afterState = authenticationReducer(beforeState, action);
+    expect(afterState).toEqual({
+      errors: undefined,
+      isLoading: false,
+      user: { username: 'test' },
+      loginSuccess: true,
+      signUpSuccess: false,
+    });
+  });
+
+  it('sets errors on sign up failure', () => {
+    const action = {
+      type: LOGIN_FAILED,
+      payload: errorData,
+    };
+
+    const afterState = authenticationReducer(beforeState, action);
     expect(afterState).toEqual({ errors: { error: 'error' }, isLoading: false, user: undefined });
   });
 });
