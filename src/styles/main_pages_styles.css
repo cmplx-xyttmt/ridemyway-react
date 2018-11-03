@@ -1,0 +1,25 @@
+/* Navbar */
+.nav {
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+}
+
+nav .brand-logo {
+    color: #d70040;
+}
+
+.nav li a {
+    /*float: left;*/
+    /*display: block;*/
+    color: #d70040;
+    text-align: center;
+    text-decoration: none;
+}
+
+.nav li a:hover, .nav li a.active {
+    background-color: rgba(0,0,0,0.8);
+}

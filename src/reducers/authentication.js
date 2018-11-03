@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import {
   TOGGLE_AUTH_VIEW,
   SIGN_UP,
