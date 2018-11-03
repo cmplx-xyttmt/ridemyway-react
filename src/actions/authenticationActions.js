@@ -57,8 +57,6 @@ export const handleSignUp = signUpData => async (dispatch) => {
     })
     .catch(() => {
       internetConnectionError(dispatch, signUpFailureAction, 2);
-      // dispatch(signUpFailureAction('Failed to sign up, check your internet connection'));
-      // dispatch(toggleAuthViewAction(2));
     });
 };
 
@@ -69,6 +67,7 @@ export const handleLogin = loginData => async (dispatch) => {
     .then((response) => {
       dispatch(loginAction(response.data));
       localStorage.setItem('token', response.data.access_token);
+      localStorage.setItem('user', loginData.username);
     })
     .catch((error) => {
       dispatch(toggleAuthViewAction(3));

@@ -4,7 +4,7 @@ import { axiosInstance } from '../../globals';
 import { TOGGLE_AUTH_VIEW, SIGN_UP, SIGNUP_FAILED } from '../types';
 import { handleSignUp, handleLogin } from '../authenticationActions';
 
-describe('sign up actions', () => {
+describe('authentication actions', () => {
   let store; let httpMock;
 
   const response = {
@@ -129,9 +129,10 @@ describe('sign up actions', () => {
   });
 
   it('logs in the user', async () => {
-    httpMock.onPost('/auth/login').reply(201, response);
+    const theResponse = { ...response, access_token: 'test' };
+    httpMock.onPost('/auth/login').reply(201, theResponse);
 
-    handleLogin()(store.dispatch);
+    handleLogin({username: 'test' })(store.dispatch);
     await flushAllPromises();
     const expected = [{
       type: 'TOGGLE_AUTH_VIEW',
@@ -139,7 +140,7 @@ describe('sign up actions', () => {
     },
     {
       type: 'LOGIN',
-      payload: { message: 'Successfully signed up' },
+      payload: theResponse,
     }];
     expect(store.getActions()).toEqual(expected);
   });
