@@ -7,6 +7,8 @@ import { Spinner } from '../../common';
 import store from '../../store';
 import {
   setRidesAction,
+  setCreatedRideAction,
+  errorCreatingRideAction,
 } from '../../actions/ridesActions';
 
 Enzyme.configure({ adapter: new Adapter(), disableLifecycleMethods: false });
@@ -32,7 +34,7 @@ describe('rides container', () => {
     expect(component.length).toBeTruthy();
   });
 
-  it('renders the rest of the page', () => {
+  it('renders the rest of the page after setting rides', () => {
     store.dispatch(setRidesAction({
       rides: [{
         id: 1,
@@ -42,5 +44,13 @@ describe('rides container', () => {
         price: 1000,
       }],
     }));
+  });
+
+  it('shows success toast on successful ride creation', () => {
+    store.dispatch(setCreatedRideAction({ ride: 'Created ride' }));
+  });
+
+  it('show failure toast when ride creation fails', () => {
+    store.dispatch(errorCreatingRideAction({ errors: 'Error' }));
   });
 });

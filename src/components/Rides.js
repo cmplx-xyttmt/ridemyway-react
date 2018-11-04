@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import M from 'materialize-css';
 import { handleFetchingRides } from '../actions/ridesActions';
 import { Spinner } from '../common';
 
@@ -11,6 +12,19 @@ class RideOffers extends React.Component {
     const { rides, fetchRides } = this.props;
 
     if (!rides.rides) fetchRides();
+  }
+
+  async componentDidUpdate(prevProps) {
+    const { rides, fetchRides } = this.props;
+    if (rides.createdRide && rides.createdRide !== prevProps.rides.createdRide) {
+      M.toast({ html: 'Ride created successfully', classes: 'green' });
+      await fetchRides();
+    }
+
+    if (rides.errorsCreatingRide
+      && rides.errorsCreatingRide !== prevProps.rides.errorsCreatingRide) {
+      M.toast({ html: 'Error creating ride, please try again', classes: 'red darken-3' });
+    }
   }
 
   render() {
