@@ -14,3 +14,7 @@ export const ERROR_CREATING_RIDE = 'ERROR_CREATING_RIDE';
 
 // Toggle Action
 export const TOGGLE_NAV_VIEW = 'TOGGLE_NAV_VIEW';
+
+// Ride request actions
+export const SET_RIDE_REQUEST = 'SET_RIDE_REQUEST';
+export const ERROR_CREATING_RIDE_REQUEST = 'ERROR_CREATING_RIDE_REQUEST';

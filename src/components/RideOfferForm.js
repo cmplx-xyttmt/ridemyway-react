@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {
   Formik, Field, ErrorMessage, Form,
 } from 'formik';
-import { handleCreatRide } from '../actions/ridesActions';
+import { handleCreateRide } from '../actions/ridesActions';
 
 export class RideOfferForm extends React.Component {
   validate = (values) => {
@@ -82,7 +82,7 @@ RideOfferForm.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  createRide: rideData => dispatch(handleCreatRide(rideData)),
+  createRide: rideData => dispatch(handleCreateRide(rideData)),
 });
 
 export default connect(null, mapDispatchToProps)(RideOfferForm);

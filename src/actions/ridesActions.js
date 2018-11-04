@@ -60,7 +60,7 @@ export const handleFetchingRides = self => async (dispatch) => {
     });
 };
 
-export const handleCreatRide = rideData => async (dispatch) => {
+export const handleCreateRide = rideData => async (dispatch) => {
   dispatch(fetchingAction(true));
 
   return await axiosInstance.post('users/rides', rideData)

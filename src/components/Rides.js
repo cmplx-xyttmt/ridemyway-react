@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import M from 'materialize-css';
 import { handleFetchingRides, toggleNavViewAction } from '../actions/ridesActions';
+import { handleSendingRideRequest } from '../actions/rideRequestActions';
 import { Spinner } from '../common';
 
 class RideOffers extends React.Component {
@@ -18,7 +19,7 @@ class RideOffers extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const { rides, fetchRides } = this.props;
+    const { rides, fetchRides, requests } = this.props;
     if (rides.createdRide && rides.createdRide !== prevProps.rides.createdRide) {
       M.toast({ html: 'Ride created successfully', classes: 'green' });
       await fetchRides();
@@ -34,6 +35,25 @@ class RideOffers extends React.Component {
     } else if (rides.isViewingAllRides
       && rides.isViewingAllRides !== prevProps.rides.isViewingAllRides) {
       await fetchRides();
+    }
+
+    if (requests.errors
+      && (!prevProps.requests.errors
+        || requests.errors.message !== prevProps.requests.errors.message)) {
+      M.toast({ html: requests.errors.message, classes: 'red darken-3' });
+    }
+
+    if (requests.rideRequest
+      && (!prevProps.requests.rideRequest
+        || requests.rideRequest !== prevProps.requests.rideRequest)) {
+      M.toast({ html: 'Successfully requested this ride', classes: 'green' });
+    }
+  }
+
+  async handleClick(rideId) {
+    const { requestRide, rides } = this.props;
+    if (rides.isViewingAllRides) {
+      await requestRide(rideId);
     }
   }
 
@@ -68,7 +88,12 @@ class RideOffers extends React.Component {
                   <td>{rideOffer.destination}</td>
                   <td>{rideOffer.price}</td>
                   <td>
-                    <button type="button" className="btn">
+                    <button
+                      type="button"
+                      className="btn"
+                      id={`ride-click-button${rideOffer.id}`}
+                      onClick={() => this.handleClick(rideOffer.id)}
+                    >
                       {`${rides.isViewingOwnRides ? 'View Requests' : 'Request Ride'}`}
                     </button>
                   </td>
@@ -86,15 +111,19 @@ RideOffers.propTypes = {
   rides: PropTypes.object.isRequired,
   fetchRides: PropTypes.func.isRequired,
   toggleNav: PropTypes.func.isRequired,
+  requestRide: PropTypes.func.isRequired,
+  requests: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
   rides: state.rideOffers,
+  requests: state.rideRequests,
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchRides: self => dispatch(handleFetchingRides(self)),
   toggleNav: view => dispatch(toggleNavViewAction(view)),
+  requestRide: rideId => dispatch(handleSendingRideRequest(rideId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RideOffers);
