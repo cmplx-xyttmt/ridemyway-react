@@ -5,6 +5,7 @@ import {
   FETCHING_RIDES_FAILED,
   SET_CREATED_RIDE,
   ERROR_CREATING_RIDE,
+  TOGGLE_NAV_VIEW,
 } from './types';
 import { axiosInstance } from '../globals';
 
@@ -33,10 +34,19 @@ export const errorCreatingRideAction = payload => ({
   payload,
 });
 
-export const handleFetchingRides = () => async (dispatch) => {
+export const toggleNavViewAction = view => ({
+  type: TOGGLE_NAV_VIEW,
+  payload: {
+    isViewingAllRides: view === 1,
+    isViewingOwnRides: view === 2,
+  },
+});
+
+export const handleFetchingRides = self => async (dispatch) => {
   dispatch(fetchingAction(true));
 
-  return await axiosInstance.get('rides')
+  const url = self ? 'user/rides' : 'rides';
+  return await axiosInstance.get(url)
     .then((response) => {
       dispatch(setRidesAction(response.data));
       dispatch(fetchingAction(false));
