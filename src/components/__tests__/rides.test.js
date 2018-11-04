@@ -11,6 +11,7 @@ import {
   errorCreatingRideAction,
   toggleNavViewAction,
 } from '../../actions/ridesActions';
+import { setRideRequestAction, errorCreatingRideRequest } from '../../actions/rideRequestActions';
 
 Enzyme.configure({ adapter: new Adapter(), disableLifecycleMethods: false });
 
@@ -51,11 +52,34 @@ describe('rides container', () => {
     store.dispatch(setCreatedRideAction({ ride: 'Created ride' }));
   });
 
-  it('show failure toast when ride creation fails', () => {
+  it('shows failure toast when ride creation fails', () => {
     store.dispatch(errorCreatingRideAction({ errors: 'Error' }));
   });
 
   it('shows my ride offers', () => {
     store.dispatch(toggleNavViewAction(2));
+  });
+
+  it('simulates click on request ride button', () => {
+    store.dispatch(toggleNavViewAction(1));
+    store.dispatch(setRidesAction({
+      rides: [{
+        id: 6767676,
+        name: 'test',
+        origin: 'test',
+        destination: 'test',
+        price: 1000,
+      }],
+    }));
+    wrapper.update();
+    wrapper.find('button').simulate('click');
+  });
+
+  it('shows success toast when ride request is sent successfully', () => {
+    store.dispatch(setRideRequestAction({ request: 'test' }));
+  });
+
+  it('shows failure toast when ride request fails', () => {
+    store.dispatch(errorCreatingRideRequest({ errors: 'error' }));
   });
 });
