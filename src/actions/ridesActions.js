@@ -39,6 +39,7 @@ export const toggleNavViewAction = view => ({
   payload: {
     isViewingAllRides: view === 1,
     isViewingOwnRides: view === 2,
+    isViewingRideRequests: view === 3,
   },
 });
 

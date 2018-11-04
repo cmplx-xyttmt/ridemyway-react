@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import M from 'materialize-css';
 import { handleFetchingRides, toggleNavViewAction } from '../actions/ridesActions';
-import { handleSendingRideRequest } from '../actions/rideRequestActions';
+import { handleSendingRideRequest, handleFetchingRideRequests } from '../actions/rideRequestActions';
 import { Spinner } from '../common';
 
 class RideOffers extends React.Component {
@@ -51,14 +51,19 @@ class RideOffers extends React.Component {
   }
 
   async handleClick(rideId) {
-    const { requestRide, rides } = this.props;
+    const {
+      requestRide, rides, fetchRequests, toggleNav,
+    } = this.props;
     if (rides.isViewingAllRides) {
       await requestRide(rideId);
+    } else if (rides.isViewingOwnRides) {
+      toggleNav(3);
+      await fetchRequests(rideId);
     }
   }
 
   render() {
-    const { rides } = this.props;
+    const { rides, requests } = this.props;
     if (rides.isFetching || !rides.rides) {
       return (
         <div className="valign-wrapper">
@@ -66,22 +71,29 @@ class RideOffers extends React.Component {
         </div>
       );
     }
+
     const rideOffers = rides.rides;
+    const { rideRequests } = requests;
+
+    const ridesHeading = rides.isViewingOwnRides ? 'My Ride Offers' : 'All Ride Offers';
+    const heading = rides.isViewingRideRequests ? 'Ride Requests for this ride offer' : ridesHeading;
+
     return (
       <div>
         <div className="container">
-          <h1 className="intro-heading">{`${rides.isViewingOwnRides ? 'My Ride Offers' : 'All Ride Offers'}`}</h1>
+          <h1 className="intro-heading">{heading}</h1>
           <table className="responsive-table highlight">
             <thead>
               <tr>
-                <th>Offerer Name</th>
-                <th>Origin</th>
-                <th>Destination</th>
-                <th>Price</th>
+                <th>{rides.isViewingRideRequests ? 'Requester Name' : 'Offerer Name'}</th>
+                <th>{rides.isViewingRideRequests ? 'Accept' : 'Origin'}</th>
+                <th>{rides.isViewingRideRequests ? 'Reject' : 'Destination'}</th>
+                {!rides.isViewingRideRequests && (<th>Price</th>) }
               </tr>
             </thead>
             <tbody>
-              { rideOffers.slice(0).reverse().map(rideOffer => (
+              { (rides.isViewingOwnRides || rides.isViewingAllRides)
+              && rideOffers.slice(0).reverse().map(rideOffer => (
                 <tr key={rideOffer.id}>
                   <td>{rideOffer.name}</td>
                   <td>{rideOffer.origin}</td>
@@ -95,6 +107,28 @@ class RideOffers extends React.Component {
                       onClick={() => this.handleClick(rideOffer.id)}
                     >
                       {`${rides.isViewingOwnRides ? 'View Requests' : 'Request Ride'}`}
+                    </button>
+                  </td>
+                </tr>
+              )) }
+              { rides.isViewingRideRequests
+              && rideRequests.map(rideRequest => (
+                <tr key={rideRequest.id}>
+                  <td>{rideRequest.name}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className={`${rideRequest.accepted === 't' ? 'disabled' : ''} btn green-text`}
+                    >
+                      Accept
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className={`${rideRequest.rejected === 't' ? 'disabled' : ''} btn red-text`}
+                    >
+                      Reject
                     </button>
                   </td>
                 </tr>
@@ -113,6 +147,7 @@ RideOffers.propTypes = {
   toggleNav: PropTypes.func.isRequired,
   requestRide: PropTypes.func.isRequired,
   requests: PropTypes.object.isRequired,
+  fetchRequests: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -124,6 +159,7 @@ const mapDispatchToProps = dispatch => ({
   fetchRides: self => dispatch(handleFetchingRides(self)),
   toggleNav: view => dispatch(toggleNavViewAction(view)),
   requestRide: rideId => dispatch(handleSendingRideRequest(rideId)),
+  fetchRequests: rideId => dispatch(handleFetchingRideRequests(rideId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RideOffers);
