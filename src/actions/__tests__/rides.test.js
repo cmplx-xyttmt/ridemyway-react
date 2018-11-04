@@ -2,7 +2,7 @@ import configureMockStore from 'redux-mock-store';
 import MockAdapter from 'axios-mock-adapter';
 import { axiosInstance } from '../../globals';
 import { SET_RIDES, FETCHING_RIDES_FAILED, FETCHING } from '../types';
-import { handleFetchingRides } from '../ridesActions';
+import { handleFetchingRides, handleCreatRide } from '../ridesActions';
 
 describe('authentication actions', () => {
   let store; let httpMock;
@@ -49,6 +49,32 @@ describe('authentication actions', () => {
       },
       { type: FETCHING, payload: false }];
 
+    expect(store.getActions()).toEqual(expected);
+  });
+
+  it('creates the ride offer', async () => {
+    httpMock.onPost('/users/rides').reply(201, response);
+
+    handleCreatRide()(store.dispatch);
+    await flushAllPromises();
+    const expected = [{ type: 'FETCHING', payload: true },
+      { type: 'SET_CREATED_RIDE', payload: { message: 'Successful' } },
+      { type: 'FETCHING', payload: false }];
+
+    expect(store.getActions()).toEqual(expected);
+  });
+
+  it('shows an error when creating rides fails', async () => {
+    httpMock.onPost('/users/rides').reply(400, errorData);
+
+    handleCreatRide()(store.dispatch);
+    await flushAllPromises();
+    const expected = [{ type: 'FETCHING', payload: true },
+      {
+        type: 'ERROR_CREATING_RIDE',
+        payload: { message: 'There was an error' },
+      },
+      { type: 'FETCHING', payload: false }];
     expect(store.getActions()).toEqual(expected);
   });
 });
