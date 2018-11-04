@@ -3,15 +3,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import M from 'materialize-css';
-import { handleFetchingRides } from '../actions/ridesActions';
+import { handleFetchingRides, toggleNavViewAction } from '../actions/ridesActions';
 import { Spinner } from '../common';
 
 class RideOffers extends React.Component {
   constructor(props) {
     super(props);
-    const { rides, fetchRides } = this.props;
+    const { rides, fetchRides, toggleNav } = this.props;
 
-    if (!rides.rides) fetchRides();
+    if (!rides.rides) {
+      toggleNav(1);
+      fetchRides();
+    }
   }
 
   async componentDidUpdate(prevProps) {
@@ -24,6 +27,13 @@ class RideOffers extends React.Component {
     if (rides.errorsCreatingRide
       && rides.errorsCreatingRide !== prevProps.rides.errorsCreatingRide) {
       M.toast({ html: 'Error creating ride, please try again', classes: 'red darken-3' });
+    }
+
+    if (rides.isViewingOwnRides && rides.isViewingOwnRides !== prevProps.rides.isViewingOwnRides) {
+      await fetchRides(true);
+    } else if (rides.isViewingAllRides
+      && rides.isViewingAllRides !== prevProps.rides.isViewingAllRides) {
+      await fetchRides();
     }
   }
 
@@ -40,7 +50,7 @@ class RideOffers extends React.Component {
     return (
       <div>
         <div className="container">
-          <h1 className="intro-heading">Ride Offers</h1>
+          <h1 className="intro-heading">{`${rides.isViewingOwnRides ? 'My Ride Offers' : 'All Ride Offers'}`}</h1>
           <table className="responsive-table highlight">
             <thead>
               <tr>
@@ -57,7 +67,11 @@ class RideOffers extends React.Component {
                   <td>{rideOffer.origin}</td>
                   <td>{rideOffer.destination}</td>
                   <td>{rideOffer.price}</td>
-                  <td><button type="button" className="btn">Request Ride</button></td>
+                  <td>
+                    <button type="button" className="btn">
+                      {`${rides.isViewingOwnRides ? 'View Requests' : 'Request Ride'}`}
+                    </button>
+                  </td>
                 </tr>
               )) }
             </tbody>
@@ -71,6 +85,7 @@ class RideOffers extends React.Component {
 RideOffers.propTypes = {
   rides: PropTypes.object.isRequired,
   fetchRides: PropTypes.func.isRequired,
+  toggleNav: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -78,7 +93,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchRides: () => dispatch(handleFetchingRides()),
+  fetchRides: self => dispatch(handleFetchingRides(self)),
+  toggleNav: view => dispatch(toggleNavViewAction(view)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RideOffers);

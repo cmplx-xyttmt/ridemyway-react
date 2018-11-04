@@ -9,6 +9,7 @@ import {
   setRidesAction,
   setCreatedRideAction,
   errorCreatingRideAction,
+  toggleNavViewAction,
 } from '../../actions/ridesActions';
 
 Enzyme.configure({ adapter: new Adapter(), disableLifecycleMethods: false });
@@ -52,5 +53,9 @@ describe('rides container', () => {
 
   it('show failure toast when ride creation fails', () => {
     store.dispatch(errorCreatingRideAction({ errors: 'Error' }));
+  });
+
+  it('shows my ride offers', () => {
+    store.dispatch(toggleNavViewAction(2));
   });
 });

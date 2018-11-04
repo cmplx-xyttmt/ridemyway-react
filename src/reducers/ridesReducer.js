@@ -5,6 +5,7 @@ import {
   FETCHING_RIDES_FAILED,
   SET_CREATED_RIDE,
   ERROR_CREATING_RIDE,
+  TOGGLE_NAV_VIEW,
 } from '../actions/types';
 
 export const ridesReducer = (state = {}, action) => {
@@ -31,6 +32,12 @@ export const ridesReducer = (state = {}, action) => {
       };
     case ERROR_CREATING_RIDE:
       return { ...state, errorsCreatingRide: action.payload, isFetching: false };
+    case TOGGLE_NAV_VIEW:
+      return {
+        ...state,
+        isViewingAllRides: action.payload.isViewingAllRides,
+        isViewingOwnRides: action.payload.isViewingOwnRides,
+      };
     default:
       return { ...state };
   }

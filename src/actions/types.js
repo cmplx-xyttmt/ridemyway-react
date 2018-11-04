@@ -11,3 +11,6 @@ export const FETCHING = 'FETCHING';
 export const FETCHING_RIDES_FAILED = 'FETCHING_RIDES_FAILED';
 export const SET_CREATED_RIDE = 'SET_CREATED_RIDE';
 export const ERROR_CREATING_RIDE = 'ERROR_CREATING_RIDE';
+
+// Toggle Action
+export const TOGGLE_NAV_VIEW = 'TOGGLE_NAV_VIEW';
