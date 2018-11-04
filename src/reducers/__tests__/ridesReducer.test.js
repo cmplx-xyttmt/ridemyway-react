@@ -1,7 +1,9 @@
 import {
-  FETCHING_RIDES_FAILED, SET_CREATED_RIDE, ERROR_CREATING_RIDE,
+  FETCHING_RIDES_FAILED,
+  SET_CREATED_RIDE, ERROR_CREATING_RIDE, FETCHING_RIDE_REQUESTS_FAILED,
 } from '../../actions/types';
 import { ridesReducer } from '../ridesReducer';
+import { rideRequestsReducer } from '../requestsReducer';
 
 describe('authentication reducer tests', () => {
   let successData;
@@ -56,5 +58,15 @@ describe('authentication reducer tests', () => {
 
     const afterState = ridesReducer(beforeState, action);
     expect(afterState).toEqual({ errorsCreatingRide: { error: 'error' }, isFetching: false });
+  });
+
+  it('sets errors when fetching ride requests fails', () => {
+    const action = {
+      type: FETCHING_RIDE_REQUESTS_FAILED,
+      payload: errorData,
+    };
+
+    const afterState = rideRequestsReducer(beforeState, action);
+    expect(afterState).toEqual({ errors: { error: 'error' }, rideRequests: undefined });
   });
 });

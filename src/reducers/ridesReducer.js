@@ -37,6 +37,7 @@ export const ridesReducer = (state = {}, action) => {
         ...state,
         isViewingAllRides: action.payload.isViewingAllRides,
         isViewingOwnRides: action.payload.isViewingOwnRides,
+        isViewingRideRequests: action.payload.isViewingRideRequests,
       };
     default:
       return { ...state };
