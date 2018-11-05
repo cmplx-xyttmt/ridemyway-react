@@ -5,7 +5,7 @@ import {
   SIGNUP_FAILED,
   LOGIN,
   LOGIN_FAILED,
-
+  LOGOUT,
 } from '../actions/types';
 
 export const authenticationReducer = (state = {}, action) => {
@@ -44,6 +44,8 @@ export const authenticationReducer = (state = {}, action) => {
       return {
         ...state, errors: action.payload, isLoading: false, user: undefined,
       };
+    case LOGOUT:
+      return {};
     default:
       return state;
   }

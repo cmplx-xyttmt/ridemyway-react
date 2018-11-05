@@ -4,6 +4,7 @@ import {
   ERROR_CREATING_RIDE_REQUEST,
   SET_RIDE_REQUESTS,
   FETCHING_RIDE_REQUESTS_FAILED,
+  LOGOUT,
 } from '../actions/types';
 
 export const rideRequestsReducer = (state = {}, action) => {
@@ -24,6 +25,8 @@ export const rideRequestsReducer = (state = {}, action) => {
       return {
         ...state, errors: action.payload, rideRequests: undefined,
       };
+    case LOGOUT:
+      return {};
     default:
       return { ...state };
   }

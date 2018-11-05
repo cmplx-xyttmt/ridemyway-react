@@ -6,6 +6,7 @@ import {
   SET_CREATED_RIDE,
   ERROR_CREATING_RIDE,
   TOGGLE_NAV_VIEW,
+  LOGOUT,
 } from '../actions/types';
 
 export const ridesReducer = (state = {}, action) => {
@@ -39,6 +40,8 @@ export const ridesReducer = (state = {}, action) => {
         isViewingOwnRides: action.payload.isViewingOwnRides,
         isViewingRideRequests: action.payload.isViewingRideRequests,
       };
+    case LOGOUT:
+      return {};
     default:
       return { ...state };
   }

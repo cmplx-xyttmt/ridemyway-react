@@ -5,7 +5,7 @@ import {
   SIGNUP_FAILED,
   LOGIN,
   LOGIN_FAILED,
-
+  LOGOUT,
 } from './types';
 import { axiosInstance } from '../globals';
 
@@ -36,6 +36,10 @@ export const loginAction = payload => ({
 export const loginFailureAction = payload => ({
   type: LOGIN_FAILED,
   payload,
+});
+
+export const logoutAction = () => ({
+  type: LOGOUT,
 });
 
 const internetConnectionError = (dispatch, action, view) => {

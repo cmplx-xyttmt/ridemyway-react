@@ -1,16 +1,26 @@
 /* eslint-disable import/no-named-as-default,react/forbid-prop-types */
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../styles/main_pages_styles.css';
 import M from 'materialize-css';
 import RideOfferForm from './RideOfferForm';
 import { toggleNavViewAction } from '../actions/ridesActions';
+import { logoutAction } from '../actions/authenticationActions';
 
 class Navbar extends React.Component {
   componentDidMount() {
     const elems = document.querySelectorAll('.modal');
     M.Modal.init(elems, {});
+  }
+
+  logout() {
+    const { history, logoutAct } = this.props;
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    logoutAct();
+    history.push('/');
   }
 
   render() {
@@ -48,7 +58,7 @@ class Navbar extends React.Component {
                   My Ride offers
                 </a>
               </li>
-              <li><a href="#!">Logout</a></li>
+              <li><a href="#!" id="logout-button" onClick={() => this.logout()}>Logout</a></li>
             </ul>
           </div>
         </nav>
@@ -63,6 +73,10 @@ class Navbar extends React.Component {
 Navbar.propTypes = {
   rides: PropTypes.object.isRequired,
   toggleNavView: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  logoutAct: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -71,6 +85,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   toggleNavView: view => dispatch(toggleNavViewAction(view)),
+  logoutAct: () => dispatch(logoutAction()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));
