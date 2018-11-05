@@ -121,7 +121,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   toggleAuthView: numericFilter => dispatch(toggleAuthViewAction(numericFilter)),
   signUp: userData => dispatch(handleSignUp(userData)),
-  login: userData => dispatch(handleLogin(userData)),
+  login: async userData => dispatch(handleLogin(userData)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

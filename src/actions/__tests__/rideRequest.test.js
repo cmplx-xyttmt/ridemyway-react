@@ -7,8 +7,10 @@ import {
   FETCHING,
   SET_RIDE_REQUESTS,
   FETCHING_RIDE_REQUESTS_FAILED,
+  REQUEST_RESPONSE,
+  ERROR_REQUEST_RESPONSE,
 } from '../types';
-import { handleSendingRideRequest, handleFetchingRideRequests } from '../rideRequestActions';
+import { handleSendingRideRequest, handleFetchingRideRequests, handleRespondingToRideRequest } from '../rideRequestActions';
 
 describe('authentication actions', () => {
   let store;
@@ -66,7 +68,7 @@ describe('authentication actions', () => {
     const expected = [{ type: FETCHING, payload: true },
       {
         type: SET_RIDE_REQUESTS,
-        payload: { message: 'Successful' },
+        payload: { requests: { message: 'Successful' }, rideId: 1 },
       },
       { type: FETCHING, payload: false }];
 
@@ -86,6 +88,33 @@ describe('authentication actions', () => {
       },
       { type: FETCHING, payload: false }];
 
+    expect(store.getActions()).toEqual(expected);
+  });
+
+  it('responds to a ride request', async () => {
+    httpMock.onPut('/users/rides/1/requests/1').reply(200, response);
+
+    handleRespondingToRideRequest(1, 1, { decision: 'accept' })(store.dispatch);
+    await flushAllPromises();
+
+    const expected = [{ type: FETCHING, payload: true },
+      { type: REQUEST_RESPONSE, payload: { message: 'Successful' } },
+      { type: FETCHING, payload: false }];
+    expect(store.getActions()).toEqual(expected);
+  });
+
+  it('sets errors when responding to a ride request fails', async () => {
+    httpMock.onPut('/users/rides/1/requests/1').reply(400, errorData);
+
+    handleRespondingToRideRequest(1, 1, { decision: 'accept' })(store.dispatch);
+    await flushAllPromises();
+
+    const expected = [{ type: FETCHING, payload: true },
+      {
+        type: ERROR_REQUEST_RESPONSE,
+        payload: { message: 'There was an error' },
+      },
+      { type: FETCHING, payload: false }];
     expect(store.getActions()).toEqual(expected);
   });
 });

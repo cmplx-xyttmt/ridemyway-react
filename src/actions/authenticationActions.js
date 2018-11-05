@@ -69,9 +69,9 @@ export const handleLogin = loginData => async (dispatch) => {
 
   return await axiosInstance.post('/auth/login', loginData)
     .then((response) => {
-      dispatch(loginAction(response.data));
       localStorage.setItem('token', response.data.access_token);
       localStorage.setItem('user', loginData.username);
+      dispatch(loginAction(response.data));
     })
     .catch((error) => {
       dispatch(toggleAuthViewAction(3));

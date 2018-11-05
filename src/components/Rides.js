@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import M from 'materialize-css';
 import { handleFetchingRides, toggleNavViewAction } from '../actions/ridesActions';
-import { handleSendingRideRequest, handleFetchingRideRequests } from '../actions/rideRequestActions';
+import {
+  handleSendingRideRequest,
+  handleFetchingRideRequests,
+  handleRespondingToRideRequest,
+} from '../actions/rideRequestActions';
 import { Spinner } from '../common';
 
 class RideOffers extends React.Component {
@@ -48,6 +52,12 @@ class RideOffers extends React.Component {
         || requests.rideRequest !== prevProps.requests.rideRequest)) {
       M.toast({ html: 'Successfully requested this ride', classes: 'green' });
     }
+
+    if (requests.requestResponse
+      && (!prevProps.requests.requestResponse
+        || requests.requestResponse !== prevProps.requests.requestResponse)) {
+      M.toast({ html: requests.requestResponse.status, classes: 'green' });
+    }
   }
 
   async handleClick(rideId) {
@@ -60,6 +70,14 @@ class RideOffers extends React.Component {
       toggleNav(3);
       await fetchRequests(rideId);
     }
+  }
+
+  async requestResponse(requestId, decision) {
+    const { requests, respondToRequest, fetchRequests } = this.props;
+    const { rideId } = requests;
+
+    await respondToRequest(rideId, requestId, { decision });
+    fetchRequests(rideId);
   }
 
   render() {
@@ -119,6 +137,8 @@ class RideOffers extends React.Component {
                     <button
                       type="button"
                       className={`${rideRequest.accepted === 't' ? 'disabled' : ''} btn green-text`}
+                      id="accept-button"
+                      onClick={() => this.requestResponse(rideRequest.id, 'accept')}
                     >
                       Accept
                     </button>
@@ -127,6 +147,8 @@ class RideOffers extends React.Component {
                     <button
                       type="button"
                       className={`${rideRequest.rejected === 't' ? 'disabled' : ''} btn red-text`}
+                      id="reject-button"
+                      onClick={() => this.requestResponse(rideRequest.id, 'reject')}
                     >
                       Reject
                     </button>
@@ -148,6 +170,7 @@ RideOffers.propTypes = {
   requestRide: PropTypes.func.isRequired,
   requests: PropTypes.object.isRequired,
   fetchRequests: PropTypes.func.isRequired,
+  respondToRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -160,6 +183,10 @@ const mapDispatchToProps = dispatch => ({
   toggleNav: view => dispatch(toggleNavViewAction(view)),
   requestRide: rideId => dispatch(handleSendingRideRequest(rideId)),
   fetchRequests: rideId => dispatch(handleFetchingRideRequests(rideId)),
+  respondToRequest:
+    async (rideId, requestId, decision) => (
+      dispatch(handleRespondingToRideRequest(rideId, requestId, decision))
+    ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RideOffers);

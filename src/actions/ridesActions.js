@@ -46,6 +46,8 @@ export const toggleNavViewAction = view => ({
 export const handleFetchingRides = self => async (dispatch) => {
   dispatch(fetchingAction(true));
 
+  axiosInstance.defaults.headers.common.Authorization = localStorage.getItem('token');
+
   const url = self ? 'user/rides' : 'rides';
   return await axiosInstance.get(url)
     .then((response) => {
