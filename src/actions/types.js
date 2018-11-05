@@ -4,6 +4,7 @@ export const SIGN_UP = 'SIGN_UP';
 export const SIGNUP_FAILED = 'SIGNUP_FAILED';
 export const LOGIN = 'LOGIN';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
+export const LOGOUT = 'LOGOUT';
 
 // Rides actions
 export const SET_RIDES = 'SET_RIDES';
