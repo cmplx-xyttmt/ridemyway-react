@@ -102,7 +102,7 @@ describe('rides container', () => {
     wrapper.find('button').simulate('click');
   });
 
-  it('shows ride requests', () => {
+  it('simulates clicks on the accept ride request button', () => {
     store.dispatch(toggleNavViewAction(2));
     store.dispatch(setRidesAction({
       rides: [{
@@ -114,14 +114,45 @@ describe('rides container', () => {
       }],
     }));
     store.dispatch(setRideRequestsAction({
-      ride_requests: [{
-        id: 721,
-        name: 'test',
-        accepted: 't',
-        rejected: 'f',
-      }],
+      requests: {
+        ride_requests: [{
+          id: 721,
+          name: 'test',
+          accepted: 't',
+          rejected: 'f',
+        }],
+      },
     }));
     store.dispatch(toggleNavViewAction(3));
     wrapper.update();
+
+    wrapper.find('#accept-button').simulate('click');
+  });
+
+  it('simulates a click on the reject ride request button', () => {
+    store.dispatch(toggleNavViewAction(2));
+    store.dispatch(setRidesAction({
+      rides: [{
+        id: 6767676,
+        name: 'test',
+        origin: 'test',
+        destination: 'test',
+        price: 1000,
+      }],
+    }));
+    store.dispatch(setRideRequestsAction({
+      requests: {
+        ride_requests: [{
+          id: 721,
+          name: 'test',
+          accepted: 't',
+          rejected: 'f',
+        }],
+      },
+    }));
+    store.dispatch(toggleNavViewAction(3));
+    wrapper.update();
+
+    wrapper.find('#reject-button').simulate('click');
   });
 });

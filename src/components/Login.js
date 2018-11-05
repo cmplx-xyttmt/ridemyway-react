@@ -20,9 +20,9 @@ export default class LoginForm extends React.Component {
     return errors;
   };
 
-  signUpUser = (values) => {
+  loginUser = async (values) => {
     const { login } = this.props;
-    login(values);
+    await login(values);
   };
 
   render() {
@@ -32,7 +32,7 @@ export default class LoginForm extends React.Component {
           username: '', password: '',
         }}
         validate={values => this.validate(values)}
-        onSubmit={values => this.signUpUser(values)}
+        onSubmit={values => this.loginUser(values)}
         className="row"
       >
         <Form className="col s6 offset-s3">
