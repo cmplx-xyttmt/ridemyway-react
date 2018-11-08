@@ -12,7 +12,7 @@ This repository contains the front-end of the application that is powered by the
 The source code for the API can be found [Ride my way API](https://github.com/cmplx-xyttmt/Ride-my-way-challenge-3).
 
 # Hosting
-You can interact with the site at [Ride my way in react](http://cmplx-xyttmt.github.io/ridemyway-react).
+You can interact with the site at [Ride my way in react](https://ridemywayreact.herokuapp.com).
 
 # Features
 - Users can sign up
