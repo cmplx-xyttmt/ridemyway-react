@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/ridemyway-react/precache-manifest.f7b873de422c4092acd223ffad0e1f95.js"
+  "/ridemyway-react/precache-manifest.d205490ca3e2709e9dfec9a6d99afb18.js"
 );
 
 workbox.clientsClaim();

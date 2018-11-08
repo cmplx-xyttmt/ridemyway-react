@@ -1,14 +1,14 @@
 {
-  "main.css": "/ridemyway-react/static/css/main.0936a8a6.chunk.css",
-  "main.js": "/ridemyway-react/static/js/main.a4853f4a.chunk.js",
-  "main.js.map": "/ridemyway-react/static/js/main.a4853f4a.chunk.js.map",
-  "static/js/1.a700ff87.chunk.js": "/ridemyway-react/static/js/1.a700ff87.chunk.js",
-  "static/js/1.a700ff87.chunk.js.map": "/ridemyway-react/static/js/1.a700ff87.chunk.js.map",
+  "main.css": "/ridemyway-react/static/css/main.0cc66f6b.chunk.css",
+  "main.js": "/ridemyway-react/static/js/main.d4182d94.chunk.js",
+  "main.js.map": "/ridemyway-react/static/js/main.d4182d94.chunk.js.map",
+  "static/js/1.c09f20e0.chunk.js": "/ridemyway-react/static/js/1.c09f20e0.chunk.js",
+  "static/js/1.c09f20e0.chunk.js.map": "/ridemyway-react/static/js/1.c09f20e0.chunk.js.map",
   "runtime~main.js": "/ridemyway-react/static/js/runtime~main.7e8b5d1f.js",
   "runtime~main.js.map": "/ridemyway-react/static/js/runtime~main.7e8b5d1f.js.map",
-  "static/media/logo.svg": "/ridemyway-react/static/media/logo.5d5d9eef.svg",
-  "static/css/main.0936a8a6.chunk.css.map": "/ridemyway-react/static/css/main.0936a8a6.chunk.css.map",
+  "static/media/landing.css": "/ridemyway-react/static/media/car1.87ddf037.jpg",
+  "static/css/main.0cc66f6b.chunk.css.map": "/ridemyway-react/static/css/main.0cc66f6b.chunk.css.map",
   "index.html": "/ridemyway-react/index.html",
-  "precache-manifest.f7b873de422c4092acd223ffad0e1f95.js": "/ridemyway-react/precache-manifest.f7b873de422c4092acd223ffad0e1f95.js",
+  "precache-manifest.d205490ca3e2709e9dfec9a6d99afb18.js": "/ridemyway-react/precache-manifest.d205490ca3e2709e9dfec9a6d99afb18.js",
   "service-worker.js": "/ridemyway-react/service-worker.js"
 }
